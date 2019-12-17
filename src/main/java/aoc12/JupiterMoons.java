@@ -57,7 +57,7 @@ public class JupiterMoons {
             moons.add(new Moon(moon.getX(), moon.getY(), moon.getZ()));
         }
 
-        int steps = 1;
+        int steps = 0;
         long[] loops = new long[3];
         while (loops[0] == 0 || loops[1] == 0 || loops[2] == 0) {
             applyGravity(moons);
@@ -87,7 +87,7 @@ public class JupiterMoons {
                 }
 
                 for (int dimension = 0; dimension < 3; dimension++) {
-                    int diff = moon1.getDimension(dimension).compareTo(moon2.getDimension(dimension));
+                    int diff = moon1.getPosition(dimension).compareTo(moon2.getPosition(dimension));
                     moon1.changeVel(diff * -1, dimension);
                     moon2.changeVel(diff, dimension);
                 }
@@ -106,7 +106,8 @@ public class JupiterMoons {
         for (int i = 0; i < moons.size(); i++) {
             Moon moon = moons.get(i);
             Moon initialMoon = initialMoons.get(i);
-            if (!moon.getDimension(dimension).equals(initialMoon.getDimension(dimension))) {
+            if (!moon.getPosition(dimension).equals(initialMoon.getPosition(dimension))
+                    || !moon.getVelocity(dimension).equals(initialMoon.getVelocity(dimension))) {
                 return false;
             }
         }
