@@ -98,7 +98,12 @@ public class ImageProcessing {
         // Print image
         for (int y = 0; y < image[0].length; y++) {
             for (int x = 0; x < image.length; x++) {
-                System.out.print(image[x][y]);
+                int color = image[x][y];
+                if (color == 1) {
+                    System.out.print("\u2588");
+                } else {
+                    System.out.print("\u2591");
+                }
             }
             System.out.println();
         }

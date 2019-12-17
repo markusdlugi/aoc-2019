@@ -11,6 +11,9 @@ public class RegistrationIdentifier {
 
     private static final String PATH = "C:/dev/workspace/aoc/src/main/resources/aoc11/";
 
+    private static final int[] dx = {0, 1, 0, -1};
+    private static final int[] dy = {1, 0, -1, 0};
+
     public static void main(String[] args) throws IOException {
         List<String> lines = Files.readAllLines(Paths.get(PATH + "input.txt"));
 
@@ -32,7 +35,7 @@ public class RegistrationIdentifier {
             // Get current panel color as input
             byte currentColor = 0;
             if (panels.get(robotPosition) != null) {
-                currentColor = (byte) panels.get(robotPosition);
+                currentColor = panels.get(robotPosition);
             }
             computer.setInput1((int) currentColor);
 
@@ -46,35 +49,15 @@ public class RegistrationIdentifier {
             // Turn robot in new direction
             byte direction = robotPosition.getDirection();
             if (turn == 0) {
-                direction -= 1;
+                direction =  (byte) ((direction + 3) % 4);
             } else {
-                direction += 1;
-            }
-            // Direction should be between 0 and 3 (u, r, d, l)
-            if (direction < 0) {
-                direction = 3;
-            } else if (direction > 3) {
-                direction = 0;
+                direction = (byte) ((direction + 1) % 4);
             }
             robotPosition.setDirection(direction);
 
             // Move robot in direction it is facing
-            switch (direction) {
-            case 0:
-                robotPosition.setY(robotPosition.getY() + 1);
-                break;
-            case 1:
-                robotPosition.setX(robotPosition.getX() + 1);
-                break;
-            case 2:
-                robotPosition.setY(robotPosition.getY() - 1);
-                break;
-            case 3:
-                robotPosition.setX(robotPosition.getX() - 1);
-                break;
-            default:
-                throw new IllegalStateException();
-            }
+            robotPosition.setX(robotPosition.getX() + dx[direction]);
+            robotPosition.setY(robotPosition.getY() + dy[direction]);
         }
 
         System.out.println("Number of panels painted: " + panels.size());

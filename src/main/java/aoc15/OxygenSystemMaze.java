@@ -44,7 +44,7 @@ public class OxygenSystemMaze {
         while (exploredPositions.size() < pathPositions.size()) {
             // Explore all directions of current position
             for (int exploreDirection = 1; exploreDirection <= 4; exploreDirection++) {
-                Coords targetCoords = getCoordsForDirection(currentPosition, exploreDirection);
+                Coords targetCoords = applyDirection(currentPosition, exploreDirection);
                 if (maze.containsKey(targetCoords)) {
                     continue;
                 }
@@ -79,7 +79,7 @@ public class OxygenSystemMaze {
             for (int i = currentDirection - 1; i < currentDirection + 3; i++) {
                 int newIndex = (i < 0) ? 3 : i % 4;
                 int newDirection = directions[newIndex];
-                targetCoords = getCoordsForDirection(currentPosition, newDirection);
+                targetCoords = applyDirection(currentPosition, newDirection);
                 if (pathPositions.contains(targetCoords)) {
                     currentDirection = newIndex;
                     directionToMove = newDirection;
@@ -116,7 +116,7 @@ public class OxygenSystemMaze {
             Set<Coords> currentOxygenCoords = new HashSet<>(oxygenCoords.keySet());
             for (Coords oxygenCoord : currentOxygenCoords) {
                 for (int direction = 1; direction <= 4; direction++) {
-                    Coords targetCoords = getCoordsForDirection(oxygenCoord, direction);
+                    Coords targetCoords = applyDirection(oxygenCoord, direction);
                     if (!pathPositions.contains(targetCoords) || oxygenCoords.containsKey(targetCoords)) {
                         continue;
                     }
@@ -143,7 +143,7 @@ public class OxygenSystemMaze {
 
             queue.remove();
             for (int i = 1; i <= 4; i++) {
-                Coords adjacent = getCoordsForDirection(curr, i);
+                Coords adjacent = applyDirection(curr, i);
                 adjacent.setDistance(curr.getDistance() + 1);
 
                 if (maze.containsKey(adjacent) && maze.get(adjacent) > 0 && !visited.contains(adjacent)) {
@@ -156,24 +156,14 @@ public class OxygenSystemMaze {
         return -1;
     }
 
-    private static Coords getCoordsForDirection(Coords position, int direction) {
-        int targetX = position.getX();
-        int targetY = position.getY();
-        switch (direction) {
-        case 1:
-            targetY++;
-            break;
-        case 2:
-            targetY--;
-            break;
-        case 3:
-            targetX--;
-            break;
-        case 4:
-            targetX++;
-            break;
+    private static final int[] dx = {0, 0, -1, 1};
+    private static final int[] dy = {1, -1, 0, 0};
+
+    private static Coords applyDirection(Coords position, int dir) {
+        if(dir < 1 || dir > 4) {
+            throw new IllegalStateException();
         }
-        return new Coords(targetX, targetY);
+        return new Coords(position.getX() + dx[dir - 1], position.getY() + dy[dir - 1]);
     }
 
     private static void printMaze(Map<Coords, Integer> maze, Coords currentPosition) {

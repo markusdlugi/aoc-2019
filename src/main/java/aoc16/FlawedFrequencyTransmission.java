@@ -1,5 +1,7 @@
 package aoc16;
 
+import static java.util.stream.Collectors.joining;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -57,14 +59,13 @@ public class FlawedFrequencyTransmission {
                     int phaseValue = phaseList.get((i) % inputSize);
                     number += digits.get(i) * phaseValue;
                 }
-                String numberString = String.valueOf(number);
-                int finalDigit = Integer.parseInt(numberString.substring(numberString.length() - 1));
+                int finalDigit = Math.abs(number) % 10;
                 outputList.add(finalDigit);
             }
             digits = outputList;
         }
 
-        String output = digits.stream().map(Object::toString).collect(Collectors.joining());
+        String output = digits.stream().map(Object::toString).collect(joining());
         System.out.println(output.substring(0, 8));
     }
 
@@ -98,8 +99,7 @@ public class FlawedFrequencyTransmission {
             int sum = 0;
             for(int i = actualSize - 1; i >= 0; i--) {
                 sum += phaseArray[phase][i];
-                String sumString = String.valueOf(sum);
-                sum = Integer.parseInt(sumString.substring(sumString.length() - 1));
+                sum = sum % 10;
                 phaseArray[phase + 1][i] = sum;
             }
         }

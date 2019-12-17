@@ -6,12 +6,10 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 public class VacuumRobot {
 
@@ -95,14 +93,14 @@ public class VacuumRobot {
 
     private static List<Command> calculatePath(Set<Coords> scaffold, Coords startingPoint) {
         Coords currentPosition = startingPoint;
-        int orientation = 0; // Up
+        int direction = 0; // Up
 
         Set<Coords> visited = new HashSet<>();
         visited.add(startingPoint);
         List<Command> resultList = new ArrayList<>();
         while (visited.size() < scaffold.size()) {
             // First try to go straight
-            Coords target = getCoordsForOrientation(currentPosition, orientation);
+            Coords target = applyDirection(currentPosition, direction);
             if (scaffold.contains(target)) {
                 resultList.get(resultList.size() - 1).increaseSteps();
                 currentPosition = target;
@@ -111,8 +109,8 @@ public class VacuumRobot {
             }
 
             // Otherwise try L
-            orientation = (4 + orientation - 1) % 4;
-            target = getCoordsForOrientation(currentPosition, orientation);
+            direction = (4 + direction - 1) % 4;
+            target = applyDirection(currentPosition, direction);
             if (scaffold.contains(target)) {
                 Command left = new Command(Command.Direction.L, 1);
                 resultList.add(left);
@@ -122,8 +120,8 @@ public class VacuumRobot {
             }
 
             // Otherwise try R
-            orientation = (4 + orientation + 2) % 4;
-            target = getCoordsForOrientation(currentPosition, orientation);
+            direction = (4 + direction + 2) % 4;
+            target = applyDirection(currentPosition, direction);
             if (scaffold.contains(target)) {
                 Command right = new Command(Command.Direction.R, 1);
                 resultList.add(right);
@@ -139,19 +137,14 @@ public class VacuumRobot {
         return resultList;
     }
 
-    private static Coords getCoordsForOrientation(Coords currentPosition, int orientation) {
-        switch (orientation) {
-        case 0:
-            return new Coords(currentPosition.getX(), currentPosition.getY() - 1);
-        case 1:
-            return new Coords(currentPosition.getX() + 1, currentPosition.getY());
-        case 2:
-            return new Coords(currentPosition.getX(), currentPosition.getY() + 1);
-        case 3:
-            return new Coords(currentPosition.getX() - 1, currentPosition.getY());
-        default:
+    private static final int[] dx = {0, 1, 0, -1};
+    private static final int[] dy = {-1, 0, 1, 0};
+
+    private static Coords applyDirection(Coords currentPosition, int dir) {
+        if(dir < 0 || dir > 3) {
             throw new IllegalStateException();
         }
+        return new Coords(currentPosition.getX() + dx[dir], currentPosition.getY() + dy[dir]);
     }
 
     private static List<Integer> calculateInputList(List<Command> path) {
