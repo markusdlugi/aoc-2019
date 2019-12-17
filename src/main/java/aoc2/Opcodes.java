@@ -1,16 +1,13 @@
 package aoc2;
 
-import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
 
 public class Opcodes {
 
-    private static final String PATH = "C:/dev/workspace/aoc/src/main/resources/aoc2/";
-
-    public static void main(String[] args) throws IOException {
-        List<String> lines = Files.readAllLines(Paths.get(PATH + "input.txt"));
+    public static void main(String[] args) throws Exception {
+        List<String> lines = Files.readAllLines(Paths.get(Opcodes.class.getResource("input.txt").toURI()));
         String[] opcodeArrayString = lines.get(0).split(",");
         int[] opcodeArray = new int[opcodeArrayString.length];
 
@@ -53,7 +50,7 @@ public class Opcodes {
     }
 
     public static int executeProgram(int[] opcodeArray) {
-        for(int i = 0; i < opcodeArray.length / 4; i++) {
+        for (int i = 0; i < opcodeArray.length / 4; i++) {
             int opcode = opcodeArray[i];
             int pos1 = opcodeArray[i * 4 + 1];
             int pos2 = opcodeArray[i * 4 + 2];

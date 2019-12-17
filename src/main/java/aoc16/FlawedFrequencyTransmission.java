@@ -1,6 +1,7 @@
 package aoc16;
 
 import static java.util.stream.Collectors.joining;
+import static java.util.stream.Collectors.toList;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -21,17 +22,15 @@ import aoc15.Coords;
 
 public class FlawedFrequencyTransmission {
 
-    private static final String PATH = "C:/dev/workspace/aoc/src/main/resources/aoc16/";
-
     private static final int[] PHASE_PATTERN = new int[] {0, 1, 0, -1};
     private static final int PHASES = 100;
     private static final int REPETITIONS = 10000;
 
     private static int inputSize;
 
-    public static void main(String[] args) throws IOException {
-        List<String> lines = Files.readAllLines(Paths.get(PATH + "input.txt"));
-        List<Integer> digits = Arrays.stream(lines.get(0).split("")).map(s -> Integer.parseInt(s)).collect(Collectors.toList());
+    public static void main(String[] args) throws Exception {
+        List<String> lines = Files.readAllLines(Paths.get(FlawedFrequencyTransmission.class.getResource("input.txt").toURI()));
+        List<Integer> digits = Arrays.stream(lines.get(0).split("")).map(Integer::parseInt).collect(toList());
 
         inputSize = digits.size();
 

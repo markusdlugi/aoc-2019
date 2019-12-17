@@ -15,10 +15,8 @@ import aoc13.IntcodeComputer;
 
 public class OxygenSystemMaze {
 
-    private static final String PATH = "C:/dev/workspace/aoc/src/main/resources/aoc15/";
-
-    public static void main(String[] args) throws IOException {
-        List<String> lines = Files.readAllLines(Paths.get(PATH + "input.txt"));
+    public static void main(String[] args) throws Exception {
+        List<String> lines = Files.readAllLines(Paths.get(OxygenSystemMaze.class.getResource("input.txt").toURI()));
 
         String[] opcodeArrayString = lines.get(0).split(",");
         long[] opcodeArray = new long[opcodeArrayString.length];

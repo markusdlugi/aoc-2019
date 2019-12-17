@@ -1,6 +1,5 @@
 package aoc8;
 
-import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -8,10 +7,8 @@ import java.util.List;
 
 public class ImageProcessing {
 
-    private static final String PATH = "C:/dev/workspace/aoc/src/main/resources/aoc8/";
-
-    public static void main(String[] args) throws IOException {
-        List<String> lines = Files.readAllLines(Paths.get(PATH + "input.txt"));
+    public static void main(String[] args) throws Exception {
+        List<String> lines = Files.readAllLines(Paths.get(ImageProcessing.class.getResource("input.txt").toURI()));
 
         String[] pixels = lines.get(0).split("");
 

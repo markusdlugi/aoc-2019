@@ -12,12 +12,11 @@ import java.util.regex.Pattern;
 
 public class SpaceChemistry {
 
-    private static final String PATH = "C:/dev/workspace/aoc/src/main/resources/aoc14/";
     private static final String REACTION_REGEX = "([0-9A-Z, ]*) => ([0-9A-Z ]*)";
     private static final String CHEMICAL_REGEX = "([0-9]*) ([A-Z]*)";
 
-    public static void main(String[] args) throws IOException, InterruptedException {
-        List<String> lines = Files.readAllLines(Paths.get(PATH + "input.txt"));
+    public static void main(String[] args) throws Exception {
+        List<String> lines = Files.readAllLines(Paths.get(SpaceChemistry.class.getResource("input.txt").toURI()));
         Pattern reactionPattern = Pattern.compile(REACTION_REGEX);
         Pattern chemicalPattern = Pattern.compile(CHEMICAL_REGEX);
 

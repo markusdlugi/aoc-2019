@@ -1,6 +1,5 @@
 package aoc11;
 
-import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.HashMap;
@@ -9,13 +8,12 @@ import java.util.Map;
 
 public class RegistrationIdentifier {
 
-    private static final String PATH = "C:/dev/workspace/aoc/src/main/resources/aoc11/";
+    private static final int[] dx = { 0, 1, 0, -1 };
+    private static final int[] dy = { 1, 0, -1, 0 };
 
-    private static final int[] dx = {0, 1, 0, -1};
-    private static final int[] dy = {1, 0, -1, 0};
-
-    public static void main(String[] args) throws IOException {
-        List<String> lines = Files.readAllLines(Paths.get(PATH + "input.txt"));
+    public static void main(String[] args) throws Exception {
+        List<String> lines =
+                Files.readAllLines(Paths.get(RegistrationIdentifier.class.getResource("input.txt").toURI()));
 
         String[] opcodeArrayString = lines.get(0).split(",");
         long[] opcodeArray = new long[opcodeArrayString.length];
@@ -49,7 +47,7 @@ public class RegistrationIdentifier {
             // Turn robot in new direction
             byte direction = robotPosition.getDirection();
             if (turn == 0) {
-                direction =  (byte) ((direction + 3) % 4);
+                direction = (byte) ((direction + 3) % 4);
             } else {
                 direction = (byte) ((direction + 1) % 4);
             }

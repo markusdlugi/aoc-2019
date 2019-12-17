@@ -23,10 +23,8 @@ import javax.swing.*;
  */
 public class Breakout {
 
-    private static final String PATH = "C:/dev/workspace/aoc/src/main/resources/aoc13/";
-
-    public static void main(String[] args) throws IOException, InterruptedException {
-        List<String> lines = Files.readAllLines(Paths.get(PATH + "input.txt"));
+    public static void main(String[] args) throws Exception {
+        List<String> lines = Files.readAllLines(Paths.get(Breakout.class.getResource("input.txt").toURI()));
 
         String[] opcodeArrayString = lines.get(0).split(",");
         long[] opcodeArray = new long[opcodeArrayString.length];

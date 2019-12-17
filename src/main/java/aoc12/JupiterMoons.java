@@ -1,6 +1,5 @@
 package aoc12;
 
-import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -10,11 +9,10 @@ import java.util.regex.Pattern;
 
 public class JupiterMoons {
 
-    private static final String PATH = "C:/dev/workspace/aoc/src/main/resources/aoc12/";
     private static final String MOON_REGEX = "<x=([-]?[0-9]*), y=([-]?[0-9]*), z=([-]?[0-9]*)>";
 
-    public static void main(String[] args) throws IOException {
-        List<String> lines = Files.readAllLines(Paths.get(PATH + "input.txt"));
+    public static void main(String[] args) throws Exception {
+        List<String> lines = Files.readAllLines(Paths.get(JupiterMoons.class.getResource("input.txt").toURI()));
         Pattern pattern = Pattern.compile(MOON_REGEX);
         List<Moon> initialMoons = new ArrayList<>();
         for (String line : lines) {
@@ -115,34 +113,19 @@ public class JupiterMoons {
         return true;
     }
 
+    public static long gcd(long a, long b) {
+        return a == 0 ? b : b == 0 ? a : a > b ? gcd(b, a % b) : gcd(a, b % a);
+    }
+
+    public static long lcm(long a, long b) {
+        return (a * b) / gcd(a, b);
+    }
+
     public static long lcm(long[] numbers) {
         long lcm = 1;
-        int divisor = 2;
-
-        while (true) {
-            int counter = 0;
-            boolean divisible = false;
-
-            for (int i = 0; i < numbers.length; i++) {
-                if (numbers[i] == 1) {
-                    counter++;
-                }
-
-                if (numbers[i] % divisor == 0) {
-                    divisible = true;
-                    numbers[i] = numbers[i] / divisor;
-                }
-            }
-
-            if (divisible) {
-                lcm = lcm * divisor;
-            } else {
-                divisor++;
-            }
-
-            if (counter == numbers.length) {
-                return lcm;
-            }
+        for(long number : numbers) {
+            lcm = lcm(lcm, number);
         }
+        return lcm;
     }
 }

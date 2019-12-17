@@ -1,6 +1,5 @@
 package aoc10;
 
-import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -12,10 +11,8 @@ import java.util.Set;
 
 public class AsteroidStation {
 
-    private static final String PATH = "C:/dev/workspace/aoc/src/main/resources/aoc10/";
-
-    public static void main(String[] args) throws IOException {
-        List<String> lines = Files.readAllLines(Paths.get(PATH + "input.txt"));
+    public static void main(String[] args) throws Exception {
+        List<String> lines = Files.readAllLines(Paths.get(AsteroidStation.class.getResource("input.txt").toURI()));
 
         HashMap<Asteroid, HashSet<Asteroid>> asteroidMap = new HashMap<>();
 
@@ -108,8 +105,8 @@ public class AsteroidStation {
             currentY += normalizedY;
         }
 
-        for(Asteroid lineCoord : line) {
-            if(asteroidMap.containsKey(lineCoord)) {
+        for (Asteroid lineCoord : line) {
+            if (asteroidMap.containsKey(lineCoord)) {
                 return false;
             }
         }
@@ -118,7 +115,7 @@ public class AsteroidStation {
 
     private static void vaporizeAsteroids(Asteroid station, HashMap<Asteroid, HashSet<Asteroid>> asteroidMap) {
         // Calculate all angles and distances
-        for(Asteroid asteroid : asteroidMap.keySet()) {
+        for (Asteroid asteroid : asteroidMap.keySet()) {
             asteroid.setAngle(calculateAngle(station, asteroid));
             asteroid.setDistance(calculateDistance(station, asteroid));
         }
@@ -132,7 +129,7 @@ public class AsteroidStation {
         Asteroid resultAsteroid = null;
         int vaporized = 0;
         double previousAngle = -1;
-        while(!sortedAsteroids.isEmpty() && vaporized < 200) {
+        while (!sortedAsteroids.isEmpty() && vaporized < 200) {
             Set<Asteroid> vaporizedAsteroids = new HashSet<>();
             for (Asteroid asteroid : sortedAsteroids) {
                 // Only vaporize closest one at same angle, skip others for now
@@ -163,7 +160,7 @@ public class AsteroidStation {
         double degrees = Math.toDegrees(Math.atan2(yDiff, xDiff));
         // Standard range is -180 to +180, make positive and shift by 90 so up is 0
         degrees += 90;
-        if(degrees < 0) {
+        if (degrees < 0) {
             degrees += 360;
         }
         return degrees;

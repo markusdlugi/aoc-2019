@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -13,10 +14,8 @@ import java.util.Set;
 
 public class VacuumRobot {
 
-    private static final String PATH = "C:/dev/workspace/aoc/src/main/resources/aoc17/";
-
-    public static void main(String[] args) throws IOException {
-        List<String> lines = Files.readAllLines(Paths.get(PATH + "input.txt"));
+    public static void main(String[] args) throws Exception {
+        List<String> lines = Files.readAllLines(Paths.get(VacuumRobot.class.getResource("input.txt").toURI()));
 
         String[] opcodeArrayString = lines.get(0).split(",");
         long[] opcodeArray = new long[opcodeArrayString.length];

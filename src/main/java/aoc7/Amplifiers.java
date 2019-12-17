@@ -1,18 +1,13 @@
 package aoc7;
 
-import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 public class Amplifiers {
 
-    private static final String PATH = "C:/dev/workspace/aoc/src/main/resources/aoc7/";
-
-    public static void main(String[] args) throws IOException {
-        List<String> lines = Files.readAllLines(Paths.get(PATH + "input.txt"));
+    public static void main(String[] args) throws Exception {
+        List<String> lines = Files.readAllLines(Paths.get(Amplifiers.class.getResource("input.txt").toURI()));
 
         String[] opcodeArrayString = lines.get(0).split(",");
         int[] opcodeArray = new int[opcodeArrayString.length];
@@ -27,9 +22,10 @@ public class Amplifiers {
         Integer[] digits = new Integer[] { 5, 6, 7, 8, 9 };
         Permute<Integer> permutations = new Permute<>(digits);
 
-        while(permutations.hasNext()) {
+        while (permutations.hasNext()) {
             Integer[] phaseSetting = permutations.next();
-            String phaseSettingStr = "" + phaseSetting[0] + phaseSetting[1] + phaseSetting[2] + phaseSetting[3] + phaseSetting[4];
+            String phaseSettingStr =
+                    "" + phaseSetting[0] + phaseSetting[1] + phaseSetting[2] + phaseSetting[3] + phaseSetting[4];
 
             // Part A
             /*IntcodeComputer ampA = new IntcodeComputer(opcodeArray, 0, phaseSetting[0], 0);

@@ -1,18 +1,14 @@
 package aoc6;
 
-import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 public class OrbitalMap {
 
-    private static final String PATH = "C:/dev/workspace/aoc/src/main/resources/aoc6/";
-
-    public static void main(String[] args) throws IOException {
-        List<String> lines = Files.readAllLines(Paths.get(PATH + "input.txt"));
+    public static void main(String[] args) throws Exception {
+        List<String> lines = Files.readAllLines(Paths.get(OrbitalMap.class.getResource("input.txt").toURI()));
 
         // All orbits in one map to have single object for each of them
         HashMap<String, Orbit> orbitMap = new HashMap<>();

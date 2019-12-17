@@ -8,10 +8,8 @@ import java.util.List;
 
 public class Wires {
 
-    private static final String PATH = "C:/dev/workspace/aoc/src/main/resources/aoc3/";
-
-    public static void main(String[] args) throws IOException {
-        List<String> lines = Files.readAllLines(Paths.get(PATH + "input.txt"));
+    public static void main(String[] args) throws Exception {
+        List<String> lines = Files.readAllLines(Paths.get(Wires.class.getResource("input.txt").toURI()));
 
         String wire1Str = lines.get(0);
         String wire2Str = lines.get(1);
