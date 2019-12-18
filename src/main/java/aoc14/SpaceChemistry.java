@@ -44,38 +44,33 @@ public class SpaceChemistry {
         }
 
         // Part A
-        Map<Chemical, Long> leftoverChemicals = new HashMap<>();
-        long ore = getOreRequiredForChemical(new Chemical(1, "FUEL"), reactions, leftoverChemicals);
+        long ore = getOreRequiredForChemical(new Chemical(1, "FUEL"), reactions, new HashMap<>());
         System.out.println("Required Ore for 1 Fuel: " + ore);
         System.out.println();
 
         // Part B
         long oreAmount = 1000000000000L;
-        int fuelAmount = 1;
-        long lastOre = ore;
+        long fuelAmount = 0;
+        long lowerBound = oreAmount / ore;
+        long upperBound = lowerBound * 2;
 
-        Map<Chemical, Long> leftoverCopy = cloneHashMap(leftoverChemicals);
-        int stepSize = 100000;
-        while(ore < oreAmount) {
-            ore += getOreRequiredForChemical(new Chemical(stepSize, "FUEL"), reactions, leftoverChemicals);
+        int steps = 0;
+        while(lowerBound < upperBound) {
+            steps++;
+            fuelAmount = (upperBound + lowerBound) / 2;
+            ore = getOreRequiredForChemical(new Chemical(fuelAmount, "FUEL"), reactions, new HashMap<>());
 
             if(ore > oreAmount) {
-                if(stepSize == 1) {
-                    break;
-                }
-                ore = lastOre;
-                leftoverChemicals = leftoverCopy;
-                leftoverCopy = cloneHashMap(leftoverChemicals);
-                stepSize /= 10;
-            } else {
-                fuelAmount += stepSize;
-                leftoverCopy = cloneHashMap(leftoverChemicals);
-                lastOre = ore;
+                upperBound = fuelAmount - 1;
+            }
+            else {
+                lowerBound = fuelAmount + 1;
             }
 
             System.out.println(ore + " ORE => "+ fuelAmount + " FUEL");
         }
 
+        System.out.println("Steps: " + steps);
         System.out.println("FUEL produced with " + oreAmount + " ORE: " + fuelAmount);
     }
 
@@ -98,14 +93,12 @@ public class SpaceChemistry {
             }
         }
 
-        long reactionCount = 1;
-        while(requiredAmount > reactionCount * producedAmount) {
-            reactionCount++;
-        }
+        long reactionCount = (long) Math.ceil((double) requiredAmount / producedAmount);
 
         // In case we still have some leftovers, stash them for later usage
-        if(producedAmount * reactionCount > requiredAmount) {
-            leftoverChemicals.put(chemical, producedAmount * reactionCount - requiredAmount);
+        long totallyProducedAmount = producedAmount * reactionCount;
+        if(totallyProducedAmount > requiredAmount) {
+            leftoverChemicals.put(chemical, totallyProducedAmount - requiredAmount);
         }
 
         long ore = 0;
