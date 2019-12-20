@@ -34,36 +34,23 @@ public class TractorBeam {
 
         // Part B
         // We only start at 1000 because beam is really improbable to be large enough earlier
-        int lastFirstX = 0;
+        int beamStartX = 0;
         for(int y = 1000; y < 10000; y++) {
             System.out.println("Line " + y);
-            boolean firstX = true;
-            for(int x = 0; x < 10000; x++) {
-                // Jump to last position where beam started
-                if(x < lastFirstX) {
-                    x = lastFirstX;
-                    continue;
-                }
+            for(int x = beamStartX; x < 10000; x++) {
                 int output = getBeam(x, y);
-                // If beam just started, jump a little since box cannot start at the beginning of 1s
-                if (output == 1 && firstX) {
-                    firstX = false;
-                    lastFirstX = x;
-                    x += 50;
-                    continue;
-                }
-                // Check if beam is large enough for box now
-                if(output == 1) {
-                    int xStart = x - (SHIP_SIZE - 1);
-                    int yStart = y;
-                    int yEnd = y + (SHIP_SIZE - 1);
-                    if(getBeam(xStart, yStart) == 1 && getBeam(xStart,yEnd) == 1) {
-                        System.out.println("Found point: " + xStart + "," + yStart + " -> " + (xStart * 10000 + yStart));
+                if (output == 1) {
+                    beamStartX = x;
+
+                    // Check if top right corner of box is also in beam
+                    int xRight = x + (SHIP_SIZE - 1);
+                    int yTop = y - (SHIP_SIZE - 1);
+                    if(getBeam(xRight, yTop) == 1) {
+                        System.out.println("Found point: " + x + "," + yTop + " -> " + (x * 10000 + yTop));
                         return;
                     }
-                }
-                // At the end of the beam, try next line
-                else if(!firstX) {
+
+                    // Didn't fit, continue with next line
                     break;
                 }
             }
