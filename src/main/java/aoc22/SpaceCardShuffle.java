@@ -116,36 +116,36 @@ public class SpaceCardShuffle {
         BigInteger card = position;
         for (int i = 0; i < operations.size(); i++) {
             ShuffleOperation operation = operations.get(i);
-            card = applyOperation(card, operation, i);
+            card = applyOperation(card, operation);
         }
         return card;
     }
 
-    private static BigInteger applyOperation(BigInteger position, ShuffleOperation operation, int opPosition) {
+    private static BigInteger applyOperation(BigInteger position, ShuffleOperation operation) {
         switch (operation.getOperation()) {
         case NEW_STACK:
-            return dealIntoNewStack(position, opPosition);
+            return dealIntoNewStack(position);
         case CUT:
-            return cut(position, BigInteger.valueOf(operation.getParameter()), opPosition);
+            return cut(position, BigInteger.valueOf(operation.getParameter()));
         case INCREMENT:
-            return dealWithIncrement(position, BigInteger.valueOf(operation.getParameter()), opPosition);
+            return dealWithIncrement(position, BigInteger.valueOf(operation.getParameter()));
         default:
             throw new IllegalStateException();
         }
     }
 
-    private static BigInteger cut(BigInteger position, BigInteger amount, int opPosition) {
+    private static BigInteger cut(BigInteger position, BigInteger amount) {
         // (D + position + amount) % D
         return DECK_SIZE.add(position).add(amount).mod(DECK_SIZE);
     }
 
-    private static BigInteger dealWithIncrement(BigInteger position, BigInteger increment, int opPosition) {
+    private static BigInteger dealWithIncrement(BigInteger position, BigInteger increment) {
         // position * increment % D -> position / increment % D -> position * modinv(inc) % D
         BigInteger modInverse = increment.modInverse(DECK_SIZE);
         return position.multiply(modInverse).mod(DECK_SIZE);
     }
 
-    private static BigInteger dealIntoNewStack(BigInteger position, int opPosition) {
+    private static BigInteger dealIntoNewStack(BigInteger position) {
         // D - 1 - position
         return DECK_SIZE.subtract(BigInteger.ONE).subtract(position);
     }
