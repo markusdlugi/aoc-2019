@@ -23,7 +23,7 @@ public class IntcodeComputer {
     private boolean firstInput;
     private boolean halt;
 
-    private boolean waitForFirstInput;
+    private boolean haltOnInput;
     private boolean muteOutput;
 
     public IntcodeComputer(long[] memory) {
@@ -49,17 +49,14 @@ public class IntcodeComputer {
         this(memory);
         this.inputQueue = inputQueue;
         this.outputQueue = outputQueue;
-        this.networkAddress = networkAddress;
-        this.network = network;
-        this.muteOutput = true;
     }
 
     public Queue<Long> getInputQueue() {
         return inputQueue;
     }
 
-    public void setWaitForFirstInput(boolean waitForFirstInput) {
-        this.waitForFirstInput = waitForFirstInput;
+    public void setHaltOnInput(boolean haltOnInput) {
+        this.haltOnInput = haltOnInput;
     }
 
     public Queue<Long> getOutputQueue() {
@@ -126,12 +123,9 @@ public class IntcodeComputer {
                 break;
             case 3:
                 // Input
-                if (!firstInput) {
-                    firstInput = true;
-                    if (waitForFirstInput) {
-                        instructionPointer--;
-                        return 0L;
-                    }
+                if(!haltOnInput && inputQueue.isEmpty()) {
+                    instructionPointer--;
+                    return 0L;
                 }
                 long input = input();
                 write(input, next(parameterModes.next()));
@@ -146,8 +140,8 @@ public class IntcodeComputer {
                 param1 = read(parameterModes.next());
                 output(param1);
                 // Return after to provide new input
-                return outputQueue.poll();
-                //break;
+                //return outputQueue.poll();
+                break;
             case 5:
                 // Jump if true
                 param1 = read(parameterModes.next());
@@ -248,7 +242,7 @@ public class IntcodeComputer {
 
     private void output(long value) {
         if (!muteOutput) {
-            System.out.println("Output: " + value);
+            System.out.print((char) value);
         }
         outputQueue.add(value);
     }
